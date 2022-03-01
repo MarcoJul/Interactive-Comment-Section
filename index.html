@@ -7,9 +7,10 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Rubik:ital,wght@0,700;1,400;1,500&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;700&display=swap"
       rel="stylesheet"
     />
+
     <link
       rel="icon"
       type="image/png"
@@ -18,7 +19,7 @@
     />
     <link rel="stylesheet" href="/dist/main.css" />
 
-    <title>Frontend Mentor | Interactive comments section</title>
+    <title>Interactive comments section</title>
 
     <!-- Feel free to remove these styles or customise in your own stylesheet 👍 -->
     <style>
@@ -33,13 +34,44 @@
     <script defer src="app/js/app.js"></script>
   </head>
   <body>
+    <section class="section">
+      <div class="container">
+        <div class="comments">
+          <div class="comment-box">
+            <div class="user-box">
+              <img
+                src="./images/avatars/image-amyrobson.png"
+                alt="profile-pic-amy-robinson"
+              />
+              <p class="username">amyrobinson</p>
+              <p class="time">1 month ago</p>
+            </div>
+            <p class="text">
+              Impressive! Though it seems the drag feature could be improved.
+              But overall it looks incredible. You've nailed the design and the
+              responsiveness at various breakpoints works really well.
+            </p>
+            <div class="action">
+              <div class="vote-box">
+                <button>
+                  <img src="images/icon-plus.svg" class="vote-button" />
+                </button>
+                <span>12</span>
+                <button><img src="images/icon-minus.svg" /></button>
+              </div>
+              <button><img src="images/icon-reply.svg" />Reply</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
     <!-- Pull dynamic content from the data.json file -->
 
     <div class="attribution">
       Challenge by
       <a href="https://www.frontendmentor.io?ref=challenge" target="_blank"
         >Frontend Mentor</a
-      >. Coded by <a href="#">Your Name Here</a>.
+      >. Coded by <a href="#">Marco</a>.
     </div>
   </body>
 </html>

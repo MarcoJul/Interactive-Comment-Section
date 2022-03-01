@@ -11,4 +11,65 @@ html {
 
 body {
   font-family: "Rubik", sans-serif;
+  background-color: #eaecf1;
+}
+
+.container {
+  margin: 0 auto;
+}
+
+.comment-box {
+  margin: 2rem;
+  background-color: white;
+  display: flex;
+  flex-direction: column;
+  padding: 2rem;
+  border-radius: 5px;
+}
+.comment-box .user-box {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+}
+.comment-box img {
+  width: 3.5rem;
+  margin-right: 2rem;
+}
+.comment-box .username {
+  color: #324152;
+  font-size: 1.6rem;
+  margin-right: 2rem;
+}
+.comment-box .time {
+  color: #67727e;
+  font-size: 1.6rem;
+}
+.comment-box .text {
+  font-size: 1.6rem;
+  color: #67727e;
+  font-weight: 400;
+}
+.comment-box .action {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.comment-box .vote-box {
+  width: 8rem;
+  height: 3rem;
+  border-radius: 5px;
+  background-color: #eaecf1;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+.comment-box button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: transparent;
+  border: none;
+}
+.comment-box button img {
+  width: 1rem;
 }/*# sourceMappingURL=main.css.map */

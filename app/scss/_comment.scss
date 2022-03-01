@@ -1,0 +1,59 @@
+.comment-box {
+  margin: 2rem;
+  background-color: $white;
+  display: flex;
+  flex-direction: column;
+  padding: 2rem;
+  border-radius: 5px;
+
+  .user-box {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+  }
+
+  img {
+    width: 3.5rem;
+    margin-right: 2rem;
+  }
+  .username {
+    color: $darkBlue;
+    font-size: 1.6rem;
+    margin-right: 2rem;
+  }
+  .time {
+    color: $grayishBlue;
+    font-size: 1.6rem;
+  }
+
+  .text {
+    font-size: 1.6rem;
+    color: $grayishBlue;
+    font-weight: 400;
+  }
+
+  .action {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .vote-box {
+    width: 8rem;
+    height: 3rem;
+    border-radius: 5px;
+    background-color: $lightGray;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+  }
+  button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: transparent;
+    border: none;
+    img {
+      width: 1rem;
+    }
+  }
+}
