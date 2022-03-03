@@ -1,4 +1,6 @@
 @charset "UTF-8";
+/***** PRIMARY *****/
+/***** NEUTRAL *****/
 ° {
   margin: 0;
   padding: 0;
@@ -16,6 +18,14 @@ body {
 
 .container {
   margin: 0 auto;
+}
+
+.attribution {
+  font-size: 11px;
+  text-align: center;
+}
+.attribution a {
+  color: #3e52a3;
 }
 
 .comment-box {
