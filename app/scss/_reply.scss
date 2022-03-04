@@ -1,5 +1,11 @@
-.comment-box {
+.reply-section {
   margin: 1.2rem;
+  border-left: 2px solid $lightGrayishBlue;
+}
+
+.reply-box {
+  position: relative;
+  margin: 0 0 1.2rem 1.8rem;
   background-color: $white;
   display: flex;
   flex-direction: column;
@@ -63,12 +69,4 @@
       width: 1rem;
     }
   }
-}
-
-.reply-button {
-  color: $moderateBlue;
-  font-weight: 700;
-  display: flex;
-  justify-content: space-between;
-  gap: 0.5rem;
 }

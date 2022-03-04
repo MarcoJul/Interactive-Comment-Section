@@ -6,10 +6,11 @@ const commentSection = document.querySelector(".comments");
 const replySection = document.querySelector(".replies");
 
 //// HTML GROUPS
+
 const createHtmlComments = (comment) => {
   let commentsHtml = `<div class="comment-box">
   <div class="user-box">
-  <img
+  <img class="user-img"
   src=${comment.user.image.png}
   alt="profile-pic-${comment.user.username}"
   />
@@ -27,16 +28,16 @@ const createHtmlComments = (comment) => {
   <span>${comment.score}</span>
   <button><img src="images/icon-minus.svg" /></button>
   </div>
-  <button><img src="images/icon-reply.svg" />Reply</button>
+  <button class="reply-button"><img src="images/icon-reply.svg" />Reply</button>
   </div>
   </div>
-  <div class="replies"></div>`;
+  <div class="replies${comment.id} reply-section"></div>`;
   return commentsHtml;
 };
 const createReplyHtml = (reply) => {
-  let replyHtml = `<div class="comment-box">
+  let replyHtml = `<div class="reply-box">
   <div class="user-box">
-  <img
+  <img class="user-img"
   src=${reply.user.image.png}
   alt="profile-pic-${reply.user.username}"
   />
@@ -54,10 +55,9 @@ const createReplyHtml = (reply) => {
   <span>${reply.score}</span>
   <button><img src="images/icon-minus.svg" /></button>
   </div>
-  <button><img src="images/icon-reply.svg" />Reply</button>
+  <button class="reply-button"><img src="images/icon-reply.svg" />Reply</button>
   </div>
-  </div>
-  <div class="replies"></div>`;
+  </div>`;
   return replyHtml;
 };
 
@@ -80,12 +80,13 @@ const fetchData = async () => {
 
 const loadComments = async () => {
   const comments = await fetchData();
+  console.log(comments);
 
   if (comments) {
     comments.forEach((comment) => {
       const commentsHtml = createHtmlComments(comment);
 
-      commentSection.insertAdjacentHTML("beforebegin", commentsHtml);
+      commentSection.insertAdjacentHTML("beforeend", commentsHtml);
 
       const replySection = document.querySelector(".replies");
 
@@ -94,7 +95,9 @@ const loadComments = async () => {
         replies.forEach((reply) => {
           const replyHtml = createReplyHtml(reply);
 
-          replySection.insertAdjacentHTML("afterbegin", replyHtml);
+          const replySection = document.querySelector(`.replies${comment.id}`);
+
+          replySection.insertAdjacentHTML("beforeend", replyHtml);
         });
       }
     });

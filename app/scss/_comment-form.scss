@@ -1,0 +1,39 @@
+.comment-form {
+  background-color: $white;
+  display: flex;
+  flex-direction: column;
+  margin: 1.2rem;
+  border-radius: 1rem;
+  padding: 1.8rem;
+  gap: 2rem;
+
+  textarea {
+    font-family: inherit;
+    height: 8rem;
+    resize: none;
+    border-radius: 0.5rem;
+    border-color: $lightGray;
+    color: $grayishBlue;
+    padding: 1rem 2rem;
+  }
+  .form-action-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  img {
+    width: 3rem;
+  }
+
+  .form-submit-button {
+    background-color: $moderateBlue;
+    color: $lightGray;
+    font-family: inherit;
+    text-transform: uppercase;
+    font-size: 1.6rem;
+    padding: 1rem 2rem;
+    border: none;
+    border-radius: 0.8rem;
+  }
+}
