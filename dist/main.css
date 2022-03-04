@@ -192,7 +192,7 @@ body {
 .comment-form img {
   width: 3rem;
 }
-.comment-form .form-submit-button {
+.comment-form .comment-submit-button {
   background-color: #5457b6;
   color: #eaecf1;
   font-family: inherit;

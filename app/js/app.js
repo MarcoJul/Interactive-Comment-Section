@@ -5,6 +5,10 @@
 const commentSection = document.querySelector(".comments");
 const replySection = document.querySelector(".replies");
 
+const textArea = document.querySelector(".comment-input");
+const imgUserForm = document.querySelector(".img-user-form");
+const commentButton = document.querySelector(".comment-submit-button");
+
 //// HTML GROUPS
 
 const createHtmlComments = (comment) => {
@@ -76,6 +80,31 @@ const fetchData = async () => {
   }
 };
 
+const fetchCurrentUser = async () => {
+  try {
+    const response = await fetch(
+      "https://interactive-comments-77e4e-default-rtdb.europe-west1.firebasedatabase.app/currentUser.json"
+    );
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+/// DATE OPERATION - TIME PASSED
+
+const formatCommentsDate = (date) => {
+  const calcDayPassed = (date1, date2) => {
+    Math.round(Math.abs(date2 - date1) / (1000 * 60 * 60 * 24));
+  };
+
+  const dayPassed = calcDayPassed(new Date(), date);
+  if (dayPassed === 0) return "Today";
+  if (dayPassed === 1) return "Yesterday";
+  if (dayPassed <= 7) return `${dayPassed} days ago`;
+};
+
 //// OPERATIVE SECTION
 
 const loadComments = async () => {
@@ -83,12 +112,10 @@ const loadComments = async () => {
   console.log(comments);
 
   if (comments) {
-    comments.forEach((comment) => {
+    comments.forEach((comment, i) => {
       const commentsHtml = createHtmlComments(comment);
 
       commentSection.insertAdjacentHTML("beforeend", commentsHtml);
-
-      const replySection = document.querySelector(".replies");
 
       if (comment.replies) {
         const replies = comment.replies;
@@ -105,3 +132,41 @@ const loadComments = async () => {
 };
 
 loadComments();
+
+//// FORM ACTION
+
+let currentUser;
+
+const currentUserData = async () => {
+  const currentUserData = await fetchCurrentUser();
+
+  currentUser = {
+    image: {
+      png: currentUserData.image.png,
+      webp: currentUserData.image.webp,
+    },
+    username: currentUserData.username,
+  };
+
+  imgUserForm.src = currentUser.image.png;
+};
+
+currentUserData();
+
+const printField = () => {
+  const newComment = {
+    content: textArea.value,
+    createdAt: "Today",
+    id: Math.random(),
+    score: 0,
+    user: currentUser,
+    reply: [],
+  };
+
+  const newCommentContent = createHtmlComments(newComment);
+
+  commentSection.insertAdjacentHTML("beforebegin", newCommentContent);
+  textArea.value = "";
+};
+
+commentButton.addEventListener("click", printField);
