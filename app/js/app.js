@@ -11,7 +11,17 @@ const commentButton = document.querySelector(".comment-submit-button");
 
 //// HTML GROUPS
 
-const createHtmlComments = (comment) => {
+const createHtmlComments = (comment, activeUser) => {
+  let activeBox;
+  if (activeUser) {
+    activeBox = `<button class="reply-button">
+        <img src="images/icon-reply.svg" />
+        Reply
+      </button>`;
+  } else {
+    activeBox = `<div>ciao</div>`;
+  }
+
   let commentsHtml = `<div class="comment-box">
   <div class="user-box">
   <img class="user-img"
@@ -32,12 +42,13 @@ const createHtmlComments = (comment) => {
   <span>${comment.score}</span>
   <button><img src="images/icon-minus.svg" /></button>
   </div>
-  <button class="reply-button"><img src="images/icon-reply.svg" />Reply</button>
+      ${activeBox}
   </div>
   </div>
   <div class="replies${comment.id} reply-section"></div>`;
   return commentsHtml;
 };
+
 const createReplyHtml = (reply) => {
   let replyHtml = `<div class="reply-box">
   <div class="user-box">
