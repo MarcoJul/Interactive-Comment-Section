@@ -8,20 +8,73 @@ const replySection = document.querySelector(".replies");
 const textArea = document.querySelector(".comment-input");
 const imgUserForm = document.querySelector(".img-user-form");
 const commentButton = document.querySelector(".comment-submit-button");
+const replyButton = document.querySelector(".reply-button");
+
+const modal = document.querySelector(".modal");
+const overlay = document.querySelector(".overlay");
+
+const btnOpenModal = document.querySelectorAll(".btn-modal");
+const btnDeleteComment = document.querySelector(".confirm");
+const btnCancelDeletingComment = document.querySelector(".cancel");
+
+/// FETCH OPERATIONS
+
+const fetchData = async () => {
+  try {
+    const response = await fetch(
+      "https://interactive-comments-77e4e-default-rtdb.europe-west1.firebasedatabase.app/comments.json"
+    );
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+const fetchActiveUser = async () => {
+  try {
+    const response = await fetch(
+      "https://interactive-comments-77e4e-default-rtdb.europe-west1.firebasedatabase.app/currentUser.json"
+    );
+    const activeUser = await response.json();
+    imgUserForm.src = activeUser.image.png;
+    return activeUser;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+// const activeUserData = async () => {
+//   const activeUser = await fetchActiveUser();
+//   return currentUser;
+// };
+
+// const activeUser = activeUserData();
 
 //// HTML GROUPS
 
-const createHtmlComments = (comment, activeUser) => {
-  let activeBox;
-  if (activeUser) {
-    activeBox = `<button class="reply-button">
+const createActionBox = (username, user) => {
+  let actionBox;
+  if (user.username === username) {
+    actionBox = `<button class="reply-button btn-modal">
+    <img src="images/icon-delete.svg" />
+    Delete
+    </button>
+    <button class="reply-button btn-modal">
+    <img src="images/icon-edit.svg" />
+    Edit
+    </button>`;
+  } else {
+    actionBox = `<button class="reply-button btn-modal">
         <img src="images/icon-reply.svg" />
         Reply
-      </button>`;
-  } else {
-    activeBox = `<div>ciao</div>`;
+        </button>`;
   }
+  return actionBox;
+};
 
+const createHtmlComments = (comment, user) => {
+  let actionBox = createActionBox(comment.user.username, user);
   let commentsHtml = `<div class="comment-box">
   <div class="user-box">
   <img class="user-img"
@@ -42,14 +95,15 @@ const createHtmlComments = (comment, activeUser) => {
   <span>${comment.score}</span>
   <button><img src="images/icon-minus.svg" /></button>
   </div>
-      ${activeBox}
+      ${actionBox}
   </div>
   </div>
   <div class="replies${comment.id} reply-section"></div>`;
   return commentsHtml;
 };
 
-const createReplyHtml = (reply) => {
+const createReplyHtml = (reply, user) => {
+  let actionBox = createActionBox(reply.user.username, user);
   let replyHtml = `<div class="reply-box">
   <div class="user-box">
   <img class="user-img"
@@ -70,37 +124,10 @@ const createReplyHtml = (reply) => {
   <span>${reply.score}</span>
   <button><img src="images/icon-minus.svg" /></button>
   </div>
-  <button class="reply-button"><img src="images/icon-reply.svg" />Reply</button>
+  ${actionBox}
   </div>
   </div>`;
   return replyHtml;
-};
-
-/// FETCH OPERATIONS
-
-const fetchData = async () => {
-  try {
-    const response = await fetch(
-      "https://interactive-comments-77e4e-default-rtdb.europe-west1.firebasedatabase.app/comments.json"
-    );
-    const data = await response.json();
-
-    return data;
-  } catch (error) {
-    console.log(error);
-  }
-};
-
-const fetchCurrentUser = async () => {
-  try {
-    const response = await fetch(
-      "https://interactive-comments-77e4e-default-rtdb.europe-west1.firebasedatabase.app/currentUser.json"
-    );
-    const data = await response.json();
-    return data;
-  } catch (error) {
-    console.log(error);
-  }
 };
 
 /// DATE OPERATION - TIME PASSED
@@ -120,18 +147,20 @@ const formatCommentsDate = (date) => {
 
 const loadComments = async () => {
   const comments = await fetchData();
-  console.log(comments);
+  const activeUser = await fetchActiveUser();
+  console.log("comments", comments);
+  console.log("active", activeUser);
 
   if (comments) {
     comments.forEach((comment, i) => {
-      const commentsHtml = createHtmlComments(comment);
+      const commentsHtml = createHtmlComments(comment, activeUser);
 
       commentSection.insertAdjacentHTML("beforeend", commentsHtml);
 
       if (comment.replies) {
         const replies = comment.replies;
         replies.forEach((reply) => {
-          const replyHtml = createReplyHtml(reply);
+          const replyHtml = createReplyHtml(reply, activeUser);
 
           const replySection = document.querySelector(`.replies${comment.id}`);
 
@@ -146,38 +175,38 @@ loadComments();
 
 //// FORM ACTION
 
-let currentUser;
-
-const currentUserData = async () => {
-  const currentUserData = await fetchCurrentUser();
-
-  currentUser = {
-    image: {
-      png: currentUserData.image.png,
-      webp: currentUserData.image.webp,
-    },
-    username: currentUserData.username,
-  };
-
-  imgUserForm.src = currentUser.image.png;
-};
-
-currentUserData();
-
-const printField = () => {
+const printField = async () => {
+  const activeUser = await fetchActiveUser();
   const newComment = {
     content: textArea.value,
     createdAt: "Today",
     id: Math.random(),
     score: 0,
-    user: currentUser,
+    user: activeUser,
     reply: [],
   };
-
-  const newCommentContent = createHtmlComments(newComment);
+  const newCommentContent = createHtmlComments(newComment, activeUser);
 
   commentSection.insertAdjacentHTML("beforebegin", newCommentContent);
   textArea.value = "";
+  window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
 };
 
 commentButton.addEventListener("click", printField);
+
+//// DELETE ACTION
+
+const openModal = (event, action) => {
+  event.preventDefault();
+  if (action === "open") {
+    modal.classList.remove("hidden");
+    overlay.classList.remove("hidden");
+  } else if (action === "close") {
+    modal.classList.add("hidden");
+    overlay.classList.add("hidden");
+  }
+};
+
+btnOpenModal.forEach((btn) =>
+  btn.addEventListener("click", console.log("click"))
+);
